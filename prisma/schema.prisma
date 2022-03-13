@@ -1,0 +1,50 @@
+datasource db {
+  provider = "mysql"
+  url      = "mysql://tom:123456asdASD@rm-wz9v387a290hwjtj52o.mysql.rds.aliyuncs.com:3306/chat"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model user {
+  id   Int    @id @default(autoincrement())
+  name String @default("我是大海狗")
+}
+
+model testUser {
+  id         String   @id @default(uuid())
+  user_id    String
+  name       String
+  avatar     String?
+  room_id    String?
+  is_online  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model friendMessages {
+  id            String   @id @default(uuid())
+  user_id       String
+  user_name     String
+  user_avater   String?
+  friend_id     String
+  friend_name   String
+  friend_avater String?
+  content       String
+  time          DateTime @default(now())
+  message_type  String   @default("text")
+}
+
+model tweet {
+  id         String   @id @default(uuid())
+  content    String?  @db.Text
+  is_public  Boolean  @default(true)
+  like_num   Int      @default(0)
+  view_count Int      @default(0)
+  user_id    String?
+  link_id    String?  @default("")
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  tag        String?  @default("")
+}
