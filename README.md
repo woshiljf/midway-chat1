@@ -14,6 +14,10 @@ $ npm run dev
 $ open http://localhost:7001/
 ```
 
+### 解决跨域问题
+
+在 config.default.ts 修改 sockitIO 的 origin 地址
+
 ### Deploy
 
 ```bash
@@ -25,6 +29,5 @@ $ npm stop
 
 - Use `npm run lint` to check code style.
 - Use `npm test` to run unit test.
-
 
 [midway]: https://midwayjs.org
