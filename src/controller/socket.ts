@@ -33,7 +33,7 @@ export class HelloSocketController {
     //  */
     const { myInfo } = data;
     const res = await this.queryUserInfo(myInfo.user_id);
-    if (!res) {
+    if (!res.length) {
       const count = await prisma.testUser.createMany({
         data: [{ ...myInfo, room_id: this.ctx.id }],
         skipDuplicates: true,
@@ -89,8 +89,8 @@ export class HelloSocketController {
       },
     });
     const res1 = await this.friendMessage(message.user_id, message.friend_id);
-    const res2 = await this.queryUser(message.friend_id);
-    const { room_id } = res2[0];
+    const res2 = await this.queryUserInfo(message.friend_id);
+    const { room_id = '110' } = res2[0];
     const res = res1.reverse();
     this.ctx.emit('output', res);
     this.ctx.to(room_id).emit('output', res);
@@ -108,18 +108,6 @@ export class HelloSocketController {
   }
   // 查询数据库
   async queryUserInfo(userId: string) {
-    const prisma = new PrismaClient();
-    const res = await prisma.testUser.findMany({
-      where: { user_id: userId },
-    });
-    console.log('res', res);
-    if (res.length) {
-      return res[0];
-    }
-    return false;
-  }
-  // 查询数据库
-  async queryUser(userId: string) {
     const prisma = new PrismaClient();
     const res = await prisma.testUser.findMany({
       where: { user_id: userId },
